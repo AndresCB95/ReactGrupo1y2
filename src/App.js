@@ -5,6 +5,7 @@ import ListaUsuarios from './components/listaUsuarios/listaUsuarios';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { Fragment } from 'react'; 
+import Autorizacion from './Autorizacion';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
 
 
       <Routes>
-        <Route path='/ver' element={<ListaUsuarios/>}/>
+        <Route path='/ver' element={Autorizacion(ListaUsuarios,["USER","ADMIN"])}/>
       </Routes>
     </BrowserRouter>
     </>
