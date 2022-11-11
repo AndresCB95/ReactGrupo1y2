@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Routes, Route, BrowserRouter} from "react-router-dom";
-import ListaUsuarios from './components/listaUsuarios/listaUsuarios';
+import ListaVuelo from './components/listaUsuarios/listaVuelo';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { Fragment } from 'react'; 
@@ -14,6 +14,7 @@ import ModificarUsuario from './components/listaUsuarios/modificarUsuario';
 function App() {
   
   if(localStorage.getItem("usuarios")==null){
+    console.log(datosUsuarioJson)
      localStorage.setItem("usuarios",JSON.stringify(datosUsuarioJson))
   }
 
@@ -48,9 +49,9 @@ function App() {
                       } >add</Button>
 
       <Routes>
-        <Route path='/ver' element={Autorizacion(ListaUsuarios,["USER","ADMIN"])}/>
+        <Route path='/ver' element={Autorizacion(ListaVuelo,["USER"])}/>
         <Route path='/add' element={Autorizacion(AddUsuario,["USER","ADMIN"])}/>
-        <Route path='/modificar' element={Autorizacion(ModificarUsuario,["USER","ADMIN"])}/>
+        <Route path='/reservas' element={Autorizacion(ModificarUsuario,["USER","ADMIN"])}/>
       </Routes>
     </BrowserRouter>
     </>
