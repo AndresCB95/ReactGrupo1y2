@@ -9,7 +9,7 @@ import Autorizacion from './Autorizacion';
 import datosUsuarioJson from "./components/listaUsuarios/datos.json"
 import AddUsuario from './components/listaUsuarios/addUsuario';
 import Button from 'react-bootstrap/Button'
-import ModificarUsuario from './components/listaUsuarios/modificarUsuario';
+import ListaReserva from './components/listaUsuarios/listaReserva';
 
 function App() {
   
@@ -44,14 +44,14 @@ function App() {
 
       <Button variant="warning" onClick={
                       ()=>{
-                        window.location.href="/modificar"
+                        window.location.href="/reservas"
                       }
-                      } >add</Button>
+                      } >reservas</Button>
 
       <Routes>
         <Route path='/ver' element={Autorizacion(ListaVuelo,["USER"])}/>
         <Route path='/add' element={Autorizacion(AddUsuario,["USER","ADMIN"])}/>
-        <Route path='/reservas' element={Autorizacion(ModificarUsuario,["USER","ADMIN"])}/>
+        <Route path='/reservas' element={Autorizacion(ListaReserva,["USER","ADMIN"])}/>
       </Routes>
     </BrowserRouter>
     </>

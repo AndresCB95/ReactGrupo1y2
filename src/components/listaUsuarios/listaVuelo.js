@@ -2,6 +2,9 @@ import React, { useState , useEffect} from 'react';
 
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup'
+
 
 const ListaVuelo = () => 
   {
@@ -9,6 +12,8 @@ const ListaVuelo = () =>
     //const datosUsuarioJson = JSON.parse(localStorage.getItem("usuarios"))
    
     const [datosVuelo, setDatosVuelo] = useState([{}])
+    const [categoria, setCategoria] = useState("")
+    const [sillasReservar, setSillasReservar] = useState(0)
 
    useEffect(
     ()=> {
@@ -32,8 +37,8 @@ const ListaVuelo = () =>
       reserva.idvuelo = vuelo._id
       reserva.sillas = [
         {
-            "categoria":"economica",
-            "silla":2,
+            "categoria":categoria,
+            "silla":sillasReservar,
             "cancelada":false
         }
       ]
@@ -59,6 +64,14 @@ const ListaVuelo = () =>
 
     }
 
+    function selectCategoria(categoriaselect){
+      setCategoria(categoriaselect)
+    }
+
+    function modificarSillas(sillas){
+      setSillasReservar(Number(sillas))
+    }
+
 
     return (
       <div>
@@ -71,6 +84,7 @@ const ListaVuelo = () =>
             <th>Destino</th>
             <th>Fecha</th>
             <th>Valor</th>
+            <th>Sillas a reservar</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -86,6 +100,54 @@ const ListaVuelo = () =>
                     <td>{vuelo.destino}</td>
                     <td>{vuelo.fecha}</td>
                     <td>${new Intl.NumberFormat("de-DE").format(`${vuelo.valor}`)}</td>
+
+                    <td>
+                  
+                    {
+                      vuelo?.silla?.map(
+                        (sillareservar,index)=>{
+                          return(
+
+                            
+                            <div key={`default-radio-${index}`}  className="mb-3">
+                              <Form.Check 
+                                type="radio"
+                                name="grupo1"
+                                id={index}
+                                label={sillareservar.categoria}
+                                value={sillareservar.categoria}
+                                onChange={
+
+                                    (e)=>{
+                                      selectCategoria(e.target.value)
+                                    }
+
+                                }
+                              />
+
+                              </div>
+                            
+
+                          )
+                        }
+                      )
+                    }
+
+                      <InputGroup className="mb-3">
+                            <InputGroup.Text id="basic-addon2"># Sillas</InputGroup.Text>
+                            <Form.Control
+                            id="sillasinput"
+                            placeholder="# sillas"
+                            aria-label="# sillas"
+                            aria-describedby="basic-addon2"
+                            onChange={
+                                (e)=>{modificarSillas(e.target.value)}
+                            }
+                            />
+                        </InputGroup>
+                
+                    </td>
+
                     <td>
                       <Button variant="primary" onClick={
                       async ()=>{
