@@ -1,14 +1,18 @@
 import React, { useState , useEffect} from 'react';
-
+import { Fragment } from 'react'; 
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 const ListaVuelo = () => 
   {
     
     //const datosUsuarioJson = JSON.parse(localStorage.getItem("usuarios"))
    
-    const [datosVuelo, setDatosVuelo] = useState([{}])
+    const [datosVuelo, setDatosVuelo] = useState([{"sillas":[]}])
+    const [sillasReservas, setSillasReservas] = useState(0)
+    const [categoria, setCategoria] = useState("")
 
    useEffect(
     ()=> {
@@ -20,6 +24,7 @@ const ListaVuelo = () =>
       .then(
         (response)=>{
           setDatosVuelo(response)
+          
         }
       ) 
     },[]
@@ -28,15 +33,10 @@ const ListaVuelo = () =>
   const reservarVuelo= async (vuelo)=> {
 
       var reserva = {}
-      reserva.idclient = "02"
+      reserva.idcliente = "02"
       reserva.idvuelo = vuelo._id
-      reserva.sillas = [
-        {
-            "categoria":"economica",
-            "silla":2,
-            "cancelada":false
-        }
-      ]
+      reserva.sillas = [{"categoria":categoria, "silla": sillasReservas}]
+      console.log(reserva.sillas)
       reserva.estadoPago="Pendiente"
       
       await fetch("http://localhost:8084/reservas",
@@ -59,6 +59,16 @@ const ListaVuelo = () =>
 
     }
 
+    const sillas = (sillas)=>{
+      console.log(sillas)
+      setSillasReservas(Number(sillas))
+    }
+
+    const fcategoria = (categoria)=>{
+      console.log(categoria)
+      setCategoria(categoria)
+    }
+
 
     return (
       <div>
@@ -71,6 +81,7 @@ const ListaVuelo = () =>
             <th>Destino</th>
             <th>Fecha</th>
             <th>Valor</th>
+            <th>sillas</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -86,6 +97,42 @@ const ListaVuelo = () =>
                     <td>{vuelo.destino}</td>
                     <td>{vuelo.fecha}</td>
                     <td>${new Intl.NumberFormat("de-DE").format(`${vuelo.valor}`)}</td>
+                    
+                    <td>
+                    
+                      {
+                        vuelo?.silla?.map(
+                          (sillac,index)=>{
+                            return(
+                              <div key={`inline-${index}`} className="mb-3">
+                              <Form.Check
+                                inline
+                                label={sillac.categoria}
+                                name="group1"
+                                type='radio'
+                                value={sillac.categoria}
+                                id={`inline-${index}-1`}
+                                onChange={(e)=>{fcategoria(e.target.value)}}
+                              />
+                              </div>
+                        )})
+                            }
+                      <InputGroup className="mb-3">
+                                  <InputGroup.Text id="basic-addon2">#</InputGroup.Text>
+                                  <Form.Control
+                                  id="sillas"
+                                  placeholder="# sillas"
+                                  aria-label="#sillas"
+                                  aria-describedby="basic-addon2"
+                                  onChange={
+                                      (e)=>{sillas(e.target.value)}
+                                  }
+                                  />
+                        </InputGroup>
+                   
+                      
+                    </td>
+                   
                     <td>
                       <Button variant="primary" onClick={
                       async ()=>{

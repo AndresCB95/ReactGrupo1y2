@@ -9,7 +9,7 @@ import Autorizacion from './Autorizacion';
 import datosUsuarioJson from "./components/listaUsuarios/datos.json"
 import AddUsuario from './components/listaUsuarios/addUsuario';
 import Button from 'react-bootstrap/Button'
-import ModificarUsuario from './components/listaUsuarios/modificarUsuario';
+//import ModificarUsuario from './components/listaUsuarios/reservas';
 
 function App() {
   
@@ -51,7 +51,7 @@ function App() {
       <Routes>
         <Route path='/ver' element={Autorizacion(ListaVuelo,["USER"])}/>
         <Route path='/add' element={Autorizacion(AddUsuario,["USER","ADMIN"])}/>
-        <Route path='/reservas' element={Autorizacion(ModificarUsuario,["USER","ADMIN"])}/>
+        
       </Routes>
     </BrowserRouter>
     </>
