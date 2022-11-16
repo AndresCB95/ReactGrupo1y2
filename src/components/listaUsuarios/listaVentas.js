@@ -4,22 +4,15 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import React, { useState, useEffect } from 'react';
 
-const ListaReserva = () => {
+const ListaVentas = () => {
 
     
     const [datosReserva, setDatosReserva] = useState([{}])
-    const [bancos, setBancos] = useState([
-      {"type":"TC","banco":"BancoUdea","franquicia":"Udea"},
-      {"type":"TD","banco":"BancoUdea","franquicia":"Udea"},
-      {"type":"Efectivo","banco":"BancoUdea","franquicia":"Recaudo"},
-      {"type":"TD","banco":"BancoG1y2","franquicia":"G1y2"},
-      {"type":"CA","banco":"BancoUdea","franquicia":"Udea"}
-    ])
 
     useEffect(
         ()=> {
           //localhost - 127.0.0.1
-          fetch("http://localhost:8084/reservas/estado/idcliente/?id=02&estado=Pendiente")
+          fetch("http://localhost:8084/reservas/estado/idcliente/?id=02&estado=Confirmado")
           .then(
             (response)=>(response.json())
           )
@@ -43,39 +36,7 @@ const ListaReserva = () => {
        )
 
 
-       const pagoReserva= async (idreserva, valor)=> {
-
-        var pago = {}
-        pago.estado = "Aprobado"
-        pago.idreserva = idreserva
-        pago.medio ={"type" :"TC", "banco":"BancoUDEA", "franquicia":"UdeA"}
-        pago.valor = valor
-        
-        
-        await fetch("http://localhost:8083/pagos",
-        
-        {
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json'
-          },
-          body:JSON.stringify(pago)
-        }
-        
-        ).then(
-          (response)=>(response.json())
-        ).then(
-          (response)=>{
-            alert(response.mensaje)
-          }
-        ).catch(
-          (error)=>{
-            console.log(error)
-            alert(error)
-          }
-        )
-  
-      }
+       
 
     return (
             <div>
@@ -91,7 +52,6 @@ const ListaReserva = () => {
                   <th>valor unitario</th>
                   <th>Valor Total</th>
                   <th>Estado del pago</th>
-                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,13 +97,6 @@ const ListaReserva = () => {
                             {reserva.estadoPago}
                           </td>
 
-                          <td>
-                            <Button variant="primary" onClick={
-                            async ()=>{
-                              await pagoReserva(reserva._id,reserva.total)
-                            }
-                            } >Pagar</Button>
-                            </td>
                         </tr>
                       );
                     }
@@ -161,4 +114,4 @@ const ListaReserva = () => {
 }
 
 
-export default ListaReserva
+export default ListaVentas
