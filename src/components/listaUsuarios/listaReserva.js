@@ -8,6 +8,7 @@ const ListaReserva = () => {
 
     
     const [datosReserva, setDatosReserva] = useState([{}])
+    const [bancoSelect, setBancoSelect] = useState({})
     const [bancos, setBancos] = useState([
       {"type":"TC","banco":"BancoUdea","franquicia":"Udea"},
       {"type":"TD","banco":"BancoUdea","franquicia":"Udea"},
@@ -48,9 +49,10 @@ const ListaReserva = () => {
         var pago = {}
         pago.estado = "Aprobado"
         pago.idreserva = idreserva
-        pago.medio ={"type" :"TC", "banco":"BancoUDEA", "franquicia":"UdeA"}
+        pago.medio = JSON.parse(bancoSelect)
         pago.valor = valor
         
+        console.log(pago)
         
         await fetch("http://localhost:8083/pagos",
         
@@ -77,6 +79,10 @@ const ListaReserva = () => {
   
       }
 
+      const bancoSelectFront = (banco) =>{
+        setBancoSelect(banco)
+      }
+
     return (
             <div>
                     
@@ -91,6 +97,7 @@ const ListaReserva = () => {
                   <th>valor unitario</th>
                   <th>Valor Total</th>
                   <th>Estado del pago</th>
+                  <th>Forma de pago</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -135,6 +142,27 @@ const ListaReserva = () => {
 
                           <td>
                             {reserva.estadoPago}
+                          </td>
+
+                          <td>
+                          <Form.Select aria-label="Default select example"
+                            onChange={
+                              (e)=>{
+                                  bancoSelectFront(e.target.value)
+                              }
+                            }
+                          >
+                            <option>Seleccione Bancos</option>
+                            {
+                              bancos?.map(
+                                (bancosmedios,index)=>{
+                                  return(
+                                    <option value={JSON.stringify(bancosmedios)}>{bancosmedios.banco} - {bancosmedios.type}</option>
+                                  )
+                                }
+                              )
+                            }
+                          </Form.Select>
                           </td>
 
                           <td>
